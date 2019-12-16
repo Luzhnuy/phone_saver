@@ -1,35 +1,36 @@
 from tkinter import *
 import json
 
+def read():
+    file = open("phones.json", "r")
+    file_text = file.read()
+    file.close()
+    return file_text
+
+def write(data):
+    file = open("phones.json", "w")
+    file.write(json.dumps(data))
+    file.close()
+
 phone_list = {"items" : {}, }
 
-file = open("phones.json", "r")
-file_text = file.read()
-file.close()
+file_text = read()
 
 if file_text == "":
-    file = open("phones.json", "w")
-    file.write(json.dumps(phone_list))
-    file.close()
+    write(phone_list)
 
 
 def save_func(event):
-    file = open("phones.json", "r")
-    items = file.read()
+    items = read()
     items = json.loads(items)
-    file.close()
     username = name.get()
     phone = phone_number.get()
     items['items'][username] = phone
-    file = open("phones.json", "w")
-    file.write(json.dumps(items))
-    file.close()
+    write(items)
     label['text'] = "Saved"
 
 def watch_func(event):
-    file = open("phones.json", "r")
-    all_phones = file.read()
-    file.close()
+    all_phones = read()
     all_phones = json.loads(all_phones)['items']
     str = ""
     for name in all_phones:
